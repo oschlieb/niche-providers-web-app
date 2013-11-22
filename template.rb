@@ -86,6 +86,10 @@ end
 web: bundle exec unicorn -p $PORT -c ./config/unicorn.rb
     RUBY
 
+    create_file "db/seeds.rb", <<-RUBY
+NicheProviders::Engine.load_seed
+    RUBY
+
     @generator.remove_file "public/index.html"
     @generator.remove_file "public/images/rails.png"
     @generator.remove_file "app/views/layouts/application.html.erb"
