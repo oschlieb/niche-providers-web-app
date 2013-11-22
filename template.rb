@@ -15,8 +15,8 @@ class AppBuilder < Rails::AppBuilder
     @generator.gem "acts_as_rateable", :git => "git://github.com/jimlambie/acts_as_rateable.git", :branch => "master"
     @generator.gem "addresslogic", :git => "git://github.com/nathansamson/addresslogic.git"
     @generator.gem 'exception_notification', :git => "git://github.com/smartinez87/exception_notification.git", :tag => "v3.0.1"
-    @generator.gem "niche_providers", :git => "/Users/james/projects/niche_providers"
-    #@generator.gem "niche_providers", :git => "git://github.com/jimlambie/niche-providers-engine", :branch => 'master'
+    #@generator.gem "niche_providers", :git => "/Users/james/projects/niche_providers"
+    @generator.gem "niche_providers", :git => "git://github.com/jimlambie/niche-providers-engine", :branch => 'master'
   end
 
   def leftovers
@@ -88,87 +88,7 @@ web: bundle exec unicorn -p $PORT -c ./config/unicorn.rb
 
     @generator.remove_file "public/index.html"
     @generator.remove_file "public/images/rails.png"
-    @generator.remove_file "app/views/layouts/application.html.erb"
-
-    create_file "app/assets/stylesheets/bootstrap_and_overrides.css.less",  <<-RUBY
-@import "twitter/bootstrap/bootstrap";
-body { padding-top: 60px; }
-@import "twitter/bootstrap/responsive";
-
-// Set the correct sprite paths
-@iconSpritePath: asset-path("twitter/bootstrap/glyphicons-halflings");
-@iconWhiteSpritePath: asset-path("twitter/bootstrap/glyphicons-halflings-white");
-
-// Set the Font Awesome (Font Awesome is default. You can disable by commenting below lines)
-// Note: If you use asset_path() here, your compiled bootstrap_and_overrides.css will not
-//       have the proper paths. So for now we use the absolute path.
-@fontAwesomeEotPath: asset-path("fontawesome-webfont.eot");
-@fontAwesomeEotPath_iefix: asset-path("fontawesome-webfont.eot#iefix");
-@fontAwesomeWoffPath: asset-path("fontawesome-webfont.woff");
-@fontAwesomeTtfPath: asset-path("fontawesome-webfont.ttf");
-@fontAwesomeSvgPath: asset-path("fontawesome-webfont.svg");
-
-// Font Awesome
-@import "fontawesome";
-
-// Glyphicons
-//@import "twitter/bootstrap/sprites.less";
-
-// Your custom LESS stylesheets goes here
-//
-// Since bootstrap was imported above you have access to its mixins which
-// you may use and inherit here
-//
-// If you'd like to override bootstrap's own variables, you can do so here as well
-// See http://twitter.github.com/bootstrap/customize.html#variables for their names and documentation
-//
-// Example:
-// @linkColor: #ff0000;
-
-.pagination {
-  background: white;
-  cursor: default;
-  height: 22px;
-  a, span, em {
-    padding: 0.2em 0.5em;
-    display: block;
-    float: left;
-    margin-right: 1px;
-  }
-  .disabled {
-    display: none;
-  }
-  .current {
-    font-style: normal;
-    font-weight: bold;
-    background: #2e6ab1;
-    color: white;
-    border: 1px solid #2e6ab1;
-  }
-  a {
-    text-decoration: none;
-    color: #105cb6;
-    border: 1px solid #9aafe5;
-    &:hover, &:focus {
-      color: #000033;
-      border-color: #000033;
-    }
-  }
-  .page_info {
-    background: #2e6ab1;
-    color: white;
-    padding: 0.4em 0.6em;
-    width: 22em;
-    margin-bottom: 0.3em;
-    text-align: center;
-    b {
-      color: #000033;
-      background: #2e6ab1 + 60;
-      padding: 0.1em 0.25em;
-    }
-  }
-}
-    RUBY
+    #@generator.remove_file "app/views/layouts/application.html.erb"
 
     rake "db:create:all"
     rake "niche_providers:install:migrations"
