@@ -27,6 +27,7 @@ class AppBuilder < Rails::AppBuilder
     @generator.remove_file(database_path) 
 
     name = ask("What was the name of your application again? (e.g. motoring_providers)").underscore
+    domain = ask("What is the domain name of your new application? (e.g. http://www.motoring_providers.co.uk)")
 
     #development_password = ask("What is the development password").underscore
     #production_password = ask("What is the production password").underscore
@@ -88,6 +89,13 @@ web: bundle exec unicorn -p $PORT -c ./config/unicorn.rb
 
     create_file "db/seeds.rb", <<-RUBY
 NicheProviders::Engine.load_seed
+    RUBY
+
+    create_file "public/robots.txt", <<-RUBY
+# See http://www.robotstxt.org/wc/norobots.html for documentation on how to use the robots.txt file
+User-Agent: *
+Disallow: /
+Sitemap: #{domain}/sitemap.xml
     RUBY
 
     @generator.remove_file "public/index.html"
