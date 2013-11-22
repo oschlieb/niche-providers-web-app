@@ -87,10 +87,12 @@ end
 web: bundle exec unicorn -p $PORT -c ./config/unicorn.rb
     RUBY
 
+    @generator.remove_file "db/seeds.rb"
     create_file "db/seeds.rb", <<-RUBY
 NicheProviders::Engine.load_seed
     RUBY
 
+    @generator.remove_file "public/robots.txt"
     create_file "public/robots.txt", <<-RUBY
 # See http://www.robotstxt.org/wc/norobots.html for documentation on how to use the robots.txt file
 User-Agent: *
