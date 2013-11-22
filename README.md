@@ -27,9 +27,9 @@ Creating a new Niche Providers Application
 
 To use the application builder template:
 
-    $ rails new myapp -d postgresql --skip-test-unit --skip-bundle -b https://raw.github.com/jimlambie/niche_providers_template/master/template.rb
+    $ rails new motoring_providers -d postgresql --skip-test-unit --skip-bundle -b https://raw.github.com/jimlambie/niche_providers_template/master/template.rb
 
-Replace `myapp` with the name of your application, for example `motoring_providers`.
+Replace `motoring_providers` with the name of your application.
 
 The `$` character indicates a shell prompt; don‘t include it when you run the command.
 
