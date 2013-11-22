@@ -88,7 +88,7 @@ web: bundle exec unicorn -p $PORT -c ./config/unicorn.rb
 
     @generator.remove_file "public/index.html"
     @generator.remove_file "public/images/rails.png"
-    #@generator.remove_file "app/views/layouts/application.html.erb"
+    @generator.remove_file "app/views/layouts/application.html.erb"
 
     rake "db:create:all"
     rake "niche_providers:install:migrations"
