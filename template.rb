@@ -2,9 +2,10 @@ class AppBuilder < Rails::AppBuilder
   include Thor::Actions
   include Thor::Shell
 
-  get "https://gist.github.com/jimlambie/7618583", "Gemfile"
-  
   def gemfile
+
+    get "https://gist.github.com/jimlambie/7618583", "Gemfile"
+
     #super
     #create_file "Gemfile"
     #@generator.gem "rails", "3.2.14"
