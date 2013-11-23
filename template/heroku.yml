@@ -1,0 +1,50 @@
+#
+# Format:
+#
+# <stage name>:
+#   app: <Heroku app name>
+#   stack: <Heroku stack, optional>
+#   tag: <git tag pattern, optional>
+#   repo: <git repository, optional>
+#   config:
+#     - <Heroku config:var name>: <Heroku config:var value>
+#
+
+production:
+  app: APPNAME_production
+  tag: production/*
+  config:
+    BUNDLE_WITHOUT: "development:test"
+    PAYPAL_API_PASSWORD:         PAYPAL_API_PASSWORD_VALUE_PRODUCTION
+    PAYPAL_API_SIGNATURE:        PAYPAL_API_SIGNATURE_VALUE_PRODUCTION
+    PAYPAL_API_USERNAME:         bree-facilitator_api1.can-did.com
+    PAYPAL_EMAIL_ADDRESS:        bree-facilitator@can-did.com
+    PAYPAL_URL_PREFIX:           https://www.sandbox.paypal.com/cgi-bin/webscr?
+    RACK_ENV:                    production
+    RAILS_ENV:                   production
+    S3_REGION:                   eu-west-1
+    S3_KEY:                      S3_KEY_VALUE_PRODUCTION
+    S3_SECRET:                   S3_SECRET_VALUE_PRODUCTION
+    S3_BUCKET:                   S3_BUCKET_VALUE_PRODUCTION
+    WEB_TIMEOUT:                 40    
+staging:
+  app: APPNAME_staging
+  config:
+    BUNDLE_WITHOUT: "development:test"
+    PAYPAL_API_PASSWORD:         PAYPAL_API_PASSWORD_VALUE_STAGING
+    PAYPAL_API_SIGNATURE:        PAYPAL_API_SIGNATURE_VALUE_STAGING
+    PAYPAL_API_USERNAME:         bree-facilitator_api1.can-did.com
+    PAYPAL_EMAIL_ADDRESS:        bree-facilitator@can-did.com
+    PAYPAL_URL_PREFIX:           https://www.sandbox.paypal.com/cgi-bin/webscr?
+    RACK_ENV:                    staging
+    RAILS_ENV:                   staging
+    S3_REGION:                   eu-west-1
+    S3_KEY:                      S3_KEY_VALUE_STAGING
+    S3_SECRET:                   S3_SECRET_VALUE_STAGING
+    S3_BUCKET:                   S3_BUCKET_VALUE_STAGING
+    WEB_TIMEOUT:                 40
+  addons:
+    - pgbackups:auto-week
+    - memcache:5mb
+    - logging:basic
+    - scheduler:standard

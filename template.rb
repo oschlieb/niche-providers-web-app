@@ -126,6 +126,12 @@ Sitemap: #{domain}/sitemap.xml
     rake "db:migrate"
     rake "niche_providers:app:bootstrap"
 
+    say("Creating Heroku applications")
+    get "https://raw.github.com/jimlambie/niche_providers_template/master/template/heroku.yml", "config/heroku.yml"
+    gsub_file 'config/heroku.yml', /S3_KEY_VALUE_STAGING/, '1234567890'
+
+    puts run('heroku config:get S3_KEY --app niche-providers-staging', :capture => true)
+
     #rake "db:migrate"
   end
 end
