@@ -24,18 +24,18 @@ class AppBuilder < Rails::AppBuilder
 
   def leftovers
 
-    say("*************************************")
+    say("*************************************", :green)
     say("Niche Providers Application Generator")
-    say("*************************************")
+    say("*************************************", :green)
 
     say("The installation process will create and migrate databases for development and test, ")
     say("create a robots.txt file and add an administrator user.")
     say("")
     say("Please answer the following questions:")
     say("")
-    name = ask("What is the name of your application? (e.g. motoring_providers)").underscore
+    name = ask("What is the name of your application? (e.g. motoring_providers)", :green).underscore
     default_domain = "http://www.#{name}.co.uk"
-    domain = ask("What is the domain name for your application? (press ENTER to use #{default_domain})")
+    domain = ask("What is the domain name for your application? (press ENTER to use #{default_domain}), :green")
     if domain == ""
       domain = default_domain
     end
@@ -121,14 +121,14 @@ Sitemap: #{domain}/sitemap.xml
     @generator.remove_file "public/images/rails.png"
     @generator.remove_file "app/views/layouts/application.html.erb"
 
-    rake "db:create:all"
-    rake "niche_providers:install:migrations"
-    rake "db:migrate"
-    rake "niche_providers:app:bootstrap"
+    #rake "db:create:all"
+    #rake "niche_providers:install:migrations"
+    #rake "db:migrate"
+    #rake "niche_providers:app:bootstrap"
 
     say("Creating Heroku applications")
     get "https://raw.github.com/jimlambie/niche_providers_template/master/template/heroku.yml", "config/heroku.yml"
-    gsub_file 'config/heroku.yml', /S3_KEY_VALUE_STAGING/, '1234567890'
+    gsub_file 'config/heroku.yml', 'S3_KEY_VALUE_STAGING', '1234567890'
 
     puts run('heroku config:get S3_KEY --app niche-providers-staging', :capture => true)
 
