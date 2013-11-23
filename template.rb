@@ -4,7 +4,7 @@ class AppBuilder < Rails::AppBuilder
 
   def gemfile
 
-    get "https://gist.github.com/jimlambie/7618583", "Gemfile"
+    get "https://gist.github.com/jimlambie/7618583/raw/ed1b798fe6c4ec7f0d73e6b9713dad4dabba5d38/Gemfile", "Gemfile"
 
     #super
     #create_file "Gemfile"
