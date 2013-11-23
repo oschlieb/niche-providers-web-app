@@ -34,7 +34,11 @@ class AppBuilder < Rails::AppBuilder
     say("Please answer the following questions:")
     say("")
     name = ask("What is the name of your application? (e.g. motoring_providers)").underscore
-    domain = ask("What is the domain name for your application? (e.g. http://www.motoring_providers.co.uk)")
+    default_domain = "http://www.#{name}.co.uk"
+    domain = ask("What is the domain name for your application? (press ENTER to use #{default_domain})")
+    if domain == ""
+      domain = default_domain
+    end
     say("")
 
     #development_password = ask("What is the development password").underscore
