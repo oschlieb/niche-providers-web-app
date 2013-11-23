@@ -2,36 +2,48 @@ class AppBuilder < Rails::AppBuilder
   include Thor::Actions
   include Thor::Shell
 
+  get "https://gist.github.com/jimlambie/7618583", "Gemfile"
+  
   def gemfile
     #super
-    create_file "Gemfile"
-    @generator.gem "rails", "3.2.14"
-    @generator.gem "pg"
-    @generator.gem "sass-rails",   "~> 3.2.3", group: [:assets]
-    @generator.gem "coffee-rails", "~> 3.2.1", group: [:assets]
-    @generator.gem "uglifier", ">= 1.0.3", group: [:assets]
-    @generator.gem "jquery-rails"
-    @generator.gem "unicorn"
-    @generator.gem "acts_as_rateable", :git => "git://github.com/jimlambie/acts_as_rateable.git", :branch => "master"
-    @generator.gem "addresslogic", :git => "git://github.com/nathansamson/addresslogic.git"
-    @generator.gem 'exception_notification', :git => "git://github.com/smartinez87/exception_notification.git", :tag => "v3.0.1"
+    #create_file "Gemfile"
+    #@generator.gem "rails", "3.2.14"
+    #@generator.gem "pg"
+    #@generator.gem "sass-rails",   "~> 3.2.3", group: [:assets]
+    #@generator.gem "coffee-rails", "~> 3.2.1", group: [:assets]
+    #@generator.gem "uglifier", ">= 1.0.3", group: [:assets]
+    #@generator.gem "jquery-rails"
+    #@generator.gem "unicorn"
+    #@generator.gem "acts_as_rateable", :git => "git://github.com/jimlambie/acts_as_rateable.git", :branch => "master"
+    #@generator.gem "addresslogic", :git => "git://github.com/nathansamson/addresslogic.git"
+    #@generator.gem 'exception_notification', :git => "git://github.com/smartinez87/exception_notification.git", :tag => "v3.0.1"
     #@generator.gem "niche_providers", :git => "/Users/james/projects/niche_providers"
-    @generator.gem "niche_providers", :git => "git://github.com/jimlambie/niche-providers-engine", :branch => 'master'
+    #@generator.gem "niche_providers", :git => "git://github.com/jimlambie/niche-providers-engine", :branch => 'master'
   end
 
   def leftovers
+
+    say("*************************************")
+    say("Niche Providers Application Generator")
+    say("*************************************")
+
+    say("The installation process will create and migrate databases for development and test, ")
+    say("create a robots.txt file and add an administrator user.")
+    say("")
+    say("Please answer the following questions:")
+    say("")
+    name = ask("What is the name of your application? (e.g. motoring_providers)").underscore
+    domain = ask("What is the domain name for your application? (e.g. http://www.motoring_providers.co.uk)")
+    say("")
+
+    #development_password = ask("What is the development password").underscore
+    #production_password = ask("What is the production password").underscore
+    #production_server = ask("What is the production server").underscore
 
     bundle_command('install')
 
     database_path = "config/database.yml"
     @generator.remove_file(database_path) 
-
-    name = ask("What was the name of your application again? (e.g. motoring_providers)").underscore
-    domain = ask("What is the domain name of your new application? (e.g. http://www.motoring_providers.co.uk)")
-
-    #development_password = ask("What is the development password").underscore
-    #production_password = ask("What is the production password").underscore
-    #production_server = ask("What is the production server").underscore
 
     create_file database_path,  <<-RUBY
 development:
