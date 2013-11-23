@@ -35,7 +35,7 @@ class AppBuilder < Rails::AppBuilder
     say("")
     name = ask("What is the name of your application? (e.g. motoring_providers)", :green).underscore
     default_domain = "http://www.#{name}.co.uk"
-    domain = ask("What is the domain name for your application? (press ENTER to use #{default_domain}), :green")
+    domain = ask("What is the domain name for your application? (press ENTER to use #{default_domain})", :green)
     if domain == ""
       domain = default_domain
     end
@@ -127,10 +127,10 @@ Sitemap: #{domain}/sitemap.xml
     #rake "niche_providers:app:bootstrap"
 
     say("Creating Heroku applications")
-    get "https://raw.github.com/jimlambie/niche_providers_template/master/template/heroku.yml", "config/heroku.yml"
-    gsub_file 'config/heroku.yml', 'S3_KEY_VALUE_STAGING', '1234567890'
+    #get "https://raw.github.com/jimlambie/niche_providers_template/master/template/heroku.yml", "config/heroku.yml"
+    #gsub_file 'config/heroku.yml', 'S3_KEY_VALUE_STAGING', '1234567890'
 
-    puts run('heroku config:get S3_KEY --app niche-providers-staging', :capture => true)
+    puts run('heroku config:get S3_KEY --app niche-providers-staging', :capture => false)
 
     #rake "db:migrate"
   end
