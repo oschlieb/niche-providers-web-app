@@ -7,6 +7,7 @@ gem "pg"
 gem "unicorn"
 
 group :development do
+  gem "heroku"
   gem "heroku_san"
 end
 

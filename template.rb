@@ -28,8 +28,11 @@ class AppBuilder < Rails::AppBuilder
     say("Niche Providers Application Generator")
     say("*************************************", :green)
 
-    say("The installation process will create and migrate databases for development and test, ")
-    say("create a robots.txt file and add an administrator user.")
+    say("The installation process will:")
+    say(" - create and migrate databases (development, test)")
+    say(" - create a robots.txt file")
+    say(" - create an administrator user")
+    say(" - create Heroku applications (staging, production")
     say("")
     say("Please answer the following questions:")
     say("")
@@ -127,10 +130,8 @@ Sitemap: #{domain}/sitemap.xml
     #rake "niche_providers:app:bootstrap"
 
     say("Creating Heroku applications")
-    #get "https://raw.github.com/jimlambie/niche_providers_template/master/template/heroku.yml", "config/heroku.yml"
-    #gsub_file 'config/heroku.yml', 'S3_KEY_VALUE_STAGING', '1234567890'
-
-    puts run('heroku config:get S3_KEY --app niche-providers-staging', :capture => false)
+    get "https://raw.github.com/jimlambie/niche_providers_template/master/template/heroku.yml", "config/heroku.yml"
+    rake "niche_providers:heroku:config"
 
     #rake "db:migrate"
   end

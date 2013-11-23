@@ -12,39 +12,49 @@
 
 production:
   app: APPNAME_production
-  tag: production/*
   config:
     BUNDLE_WITHOUT: "development:test"
-    PAYPAL_API_PASSWORD:         PAYPAL_API_PASSWORD_VALUE_PRODUCTION
-    PAYPAL_API_SIGNATURE:        PAYPAL_API_SIGNATURE_VALUE_PRODUCTION
-    PAYPAL_API_USERNAME:         bree-facilitator_api1.can-did.com
-    PAYPAL_EMAIL_ADDRESS:        bree-facilitator@can-did.com
-    PAYPAL_URL_PREFIX:           https://www.sandbox.paypal.com/cgi-bin/webscr?
+    FACEBOOK_APP_ID:             FACEBOOK_APP_ID_PRODUCTION
+    FACEBOOK_SECRET:             FACEBOOK_SECRET_PRODUCTION
+    FACEBOOK_USER_ID:            FACEBOOK_USER_ID_PRODUCTION
+    PAYPAL_API_PASSWORD:         PAYPAL_API_PASSWORD_PRODUCTION
+    PAYPAL_API_SIGNATURE:        PAYPAL_API_SIGNATURE_PRODUCTION
+    PAYPAL_API_USERNAME:         PAYPAL_API_USERNAME_PRODUCTION
+    PAYPAL_EMAIL_ADDRESS:        PAYPAL_EMAIL_ADDRESS_PRODUCTION
+    PAYPAL_URL_PREFIX:           PAYPAL_URL_PREFIX_PRODUCTION
     RACK_ENV:                    production
     RAILS_ENV:                   production
-    S3_REGION:                   eu-west-1
-    S3_KEY:                      S3_KEY_VALUE_PRODUCTION
-    S3_SECRET:                   S3_SECRET_VALUE_PRODUCTION
-    S3_BUCKET:                   S3_BUCKET_VALUE_PRODUCTION
-    WEB_TIMEOUT:                 40    
+    S3_REGION:                   S3_REGION_PRODUCTION
+    S3_KEY:                      S3_KEY_PRODUCTION
+    S3_SECRET:                   S3_SECRET_PRODUCTION
+    S3_BUCKET:                   S3_BUCKET_PRODUCTION
+    WEB_TIMEOUT:                 40
+  addons:
+    - heroku-postgresql:basic
+    - newrelic:wayne
+    - pgbackups:plus
+    - sendgrid:starter
 staging:
   app: APPNAME_staging
   config:
     BUNDLE_WITHOUT: "development:test"
-    PAYPAL_API_PASSWORD:         PAYPAL_API_PASSWORD_VALUE_STAGING
-    PAYPAL_API_SIGNATURE:        PAYPAL_API_SIGNATURE_VALUE_STAGING
-    PAYPAL_API_USERNAME:         bree-facilitator_api1.can-did.com
-    PAYPAL_EMAIL_ADDRESS:        bree-facilitator@can-did.com
-    PAYPAL_URL_PREFIX:           https://www.sandbox.paypal.com/cgi-bin/webscr?
+    FACEBOOK_APP_ID:             FACEBOOK_APP_ID_STAGING
+    FACEBOOK_SECRET:             FACEBOOK_SECRET_STAGING
+    FACEBOOK_USER_ID:            FACEBOOK_USER_ID_STAGING
+    PAYPAL_API_PASSWORD:         PAYPAL_API_PASSWORD_STAGING
+    PAYPAL_API_SIGNATURE:        PAYPAL_API_SIGNATURE_STAGING
+    PAYPAL_API_USERNAME:         PAYPAL_API_USERNAME_STAGING
+    PAYPAL_EMAIL_ADDRESS:        PAYPAL_EMAIL_ADDRESS_STAGING
+    PAYPAL_URL_PREFIX:           PAYPAL_URL_PREFIX_STAGING
     RACK_ENV:                    staging
     RAILS_ENV:                   staging
-    S3_REGION:                   eu-west-1
-    S3_KEY:                      S3_KEY_VALUE_STAGING
-    S3_SECRET:                   S3_SECRET_VALUE_STAGING
-    S3_BUCKET:                   S3_BUCKET_VALUE_STAGING
+    S3_REGION:                   S3_REGION_STAGING
+    S3_KEY:                      S3_KEY_STAGING
+    S3_SECRET:                   S3_SECRET_STAGING
+    S3_BUCKET:                   S3_BUCKET_STAGING
     WEB_TIMEOUT:                 40
   addons:
-    - pgbackups:auto-week
-    - memcache:5mb
-    - logging:basic
-    - scheduler:standard
+    - heroku-postgresql:dev
+    - newrelic:wayne
+    - pgbackups:plus
+    - sendgrid:starter
