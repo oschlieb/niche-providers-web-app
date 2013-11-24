@@ -32,11 +32,12 @@ class AppBuilder < Rails::AppBuilder
     say(" - create and migrate databases (development, test)")
     say(" - create a robots.txt file")
     say(" - create an administrator user")
-    say(" - create Heroku applications (staging, production")
+    say(" - create Heroku applications (staging, production)")
     say("")
     say("Please answer the following questions:")
     say("")
-    name = ask("What is the name of your application? (e.g. motoring_providers)", :green).underscore
+    #name = ask("What is the name of your application? (e.g. motoring_providers)", :green).underscore
+    name = Rails.application.class.parent_name.underscore
     default_domain = "http://www.#{name}.co.uk"
     domain = ask("What is the domain name for your application? (press ENTER to use #{default_domain})", :green)
     if domain == ""
@@ -124,14 +125,20 @@ Sitemap: #{domain}/sitemap.xml
     @generator.remove_file "public/images/rails.png"
     @generator.remove_file "app/views/layouts/application.html.erb"
 
-    #rake "db:create:all"
-    #rake "niche_providers:install:migrations"
-    #rake "db:migrate"
-    #rake "niche_providers:app:bootstrap"
+    rake "db:create:all"
+    rake "niche_providers:install:migrations"
+    rake "db:migrate"
+    rake "niche_providers:app:bootstrap"
 
-    say("Creating Heroku applications")
+    say("Generating Heroku configuration file")
     get "https://raw.github.com/jimlambie/niche_providers_template/master/template/heroku.yml", "config/heroku.yml"
     rake "niche_providers:heroku:config"
+
+    say("Creating Heroku applications")
+    rake "all heroku:create"
+
+    say("Installing addons")
+    rake "all heroku:addons"
 
     #rake "db:migrate"
   end

@@ -11,7 +11,7 @@
 #
 
 production:
-  app: APPNAME_production
+  app: APPNAME-production
   config:
     BUNDLE_WITHOUT: "development:test"
     FACEBOOK_APP_ID:             FACEBOOK_APP_ID_PRODUCTION
@@ -35,7 +35,7 @@ production:
     - pgbackups:plus
     - sendgrid:starter
 staging:
-  app: APPNAME_staging
+  app: APPNAME-staging
   config:
     BUNDLE_WITHOUT: "development:test"
     FACEBOOK_APP_ID:             FACEBOOK_APP_ID_STAGING
