@@ -123,13 +123,19 @@ Sitemap: #{domain}/sitemap.xml
 
     @generator.remove_file "public/index.html"
     @generator.remove_file "public/images/rails.png"
+    @generator.remove_file "app/assets/images/rails.png"
     @generator.remove_file "app/views/layouts/application.html.erb"
 
+    # gitignore
+    get "https://raw.github.com/jimlambie/niche_providers_template/master/template/gitignore", ".gitignore"
+
+    # create & migrate
     rake "db:create:all"
     rake "niche_providers:install:migrations"
     rake "db:migrate"
     rake "niche_providers:app:bootstrap"
 
+    # Heroku setup
     say("Generating Heroku configuration file")
     get "https://raw.github.com/jimlambie/niche_providers_template/master/template/heroku.yml", "config/heroku.yml"
     rake "niche_providers:heroku:config"
@@ -140,6 +146,5 @@ Sitemap: #{domain}/sitemap.xml
     say("Installing addons")
     rake "all heroku:addons"
 
-    #rake "db:migrate"
   end
 end
