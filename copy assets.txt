@@ -1,0 +1,17 @@
+      engine_asset_path = File.join(
+        Rails.application.paths.public.to_a.first,
+        <%= app_module %><%#%>::Engine::ASSET_PREFIX)
+
+      rm_rf engine_asset_path
+      host_asset_path = <%= app_module %><%#%>::Engine.paths.public.to_a.first
+
+      link = lambda do
+        begin
+          ln_s host_asset_path, engine_asset_path
+          true
+        rescue NotImplementedError
+          false
+        end
+      end
+
+      copy = lambda { cp_r host_asset_path, engine_asset_path }
