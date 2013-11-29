@@ -140,11 +140,32 @@ Sitemap: #{domain}/sitemap.xml
     get "https://raw.github.com/jimlambie/niche_providers_template/master/template/heroku.yml", "config/heroku.yml"
     rake "niche_providers:heroku:config"
 
-    say("Creating Heroku applications")
-    rake "all heroku:create"
+    create_heroku = ask("Create the Heroku applications? (y/n)", :red) == 'y'
+    if create_heroku
+      say("Creating Heroku applications")
+      rake "all heroku:create"
+    else
+      say("Skipping Heroku applications - run 'rake all heroku:create' to generate the applications in the future")
+    end
 
-    say("Installing addons")
-    rake "all heroku:addons"
+    if create_heroku
+      install_addons = ask("Install the adons for each Heroku application? (y/n)", :red) == 'y'
+
+      if install_addons
+        say("Installing addons")
+        rake "all heroku:addons"
+      else
+        say("Skipping Heroku addons - run 'rake all heroku:addons' to install them in the future")
+      end
+    end
+
+
+    say("Setting defaults based on your new domain name", :green)
+    say("Creating info email address: 'info@#{domain}'", :green)
+    NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain}")
+
+    # stylesheet
+    get "https://raw.github.com/jimlambie/niche_providers_template/master/template/application.css.scss", "app/assets/stylesheets/application.css.scss"
 
   end
 end
