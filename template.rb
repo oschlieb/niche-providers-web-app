@@ -71,7 +71,7 @@ test:
     routes_path = "config/routes.rb"
     @generator.remove_file(routes_path)
     create_file routes_path,  <<-RUBY
-#{name.camelize}::Application.routes.draw do
+#{domain_name.camelize}::Application.routes.draw do
   mount NicheProviders::Engine, at: "/"
 end
     RUBY
