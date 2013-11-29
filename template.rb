@@ -59,13 +59,13 @@ development:
   adapter: postgresql
   encoding: unicode
   pool: 5
-  database: #{name}_development
+  database: #{domain_name}_development
 
 test:
   adapter: postgresql
   encoding: unicode
   pool: 5
-  database: #{name}_test
+  database: #{domain_name}_test
     RUBY
 
     routes_path = "config/routes.rb"
