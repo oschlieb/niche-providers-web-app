@@ -36,9 +36,9 @@ class AppBuilder < Rails::AppBuilder
     say("")
     say("Please answer the following questions:")
     say("")
-    name = ask("What is the name of your application? (e.g. motoring_providers)", :green).underscore
+    domain_name = ask("What is the name of your application? (e.g. motoring_providers)", :green).underscore
     #name = Rails.application.class.parent_name.underscore
-    default_domain = "http://www.#{name}.co.uk"
+    default_domain = "http://www.#{domain_name}.co.uk"
     domain = ask("What is the domain name for your application? (press ENTER to use #{default_domain})", :green)
     if domain == ""
       domain = default_domain
@@ -129,6 +129,12 @@ Sitemap: #{domain}/sitemap.xml
     # gitignore
     get "https://raw.github.com/jimlambie/niche_providers_template/master/template/gitignore", ".gitignore"
 
+    # default settings
+    create_file "db/default_settings.rb", <<-RUBY
+NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name}.co.uk")
+    RUBY
+
+
     # create & migrate
     rake "db:create:all"
     rake "niche_providers:install:migrations"
@@ -140,7 +146,7 @@ Sitemap: #{domain}/sitemap.xml
     get "https://raw.github.com/jimlambie/niche_providers_template/master/template/heroku.yml", "config/heroku.yml"
     rake "niche_providers:heroku:config"
 
-    create_heroku = ask("Create the Heroku applications? (y/n)", :red) == 'y'
+    create_heroku = agree("Create the Heroku applications? [y/n]", :red)
     if create_heroku
       say("Creating Heroku applications")
       rake "all heroku:create"
@@ -149,7 +155,7 @@ Sitemap: #{domain}/sitemap.xml
     end
 
     if create_heroku
-      install_addons = ask("Install the adons for each Heroku application? (y/n)", :red) == 'y'
+      install_addons = agree("Install the adons for each Heroku application? [y/n]", :red)
 
       if install_addons
         say("Installing addons")
@@ -157,12 +163,7 @@ Sitemap: #{domain}/sitemap.xml
       else
         say("Skipping Heroku addons - run 'rake all heroku:addons' to install them in the future")
       end
-    end
-
-
-    say("Setting defaults based on your new domain name", :green)
-    say("Creating info email address: 'info@#{domain}'", :green)
-    NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain}")
+    end    
 
     # stylesheet
     get "https://raw.github.com/jimlambie/niche_providers_template/master/template/application.css.scss", "app/assets/stylesheets/application.css.scss"
