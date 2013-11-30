@@ -132,6 +132,7 @@ Sitemap: #{domain}/sitemap.xml
 
     # default settings
     create_file "db/default_settings.rb", <<-RUBY
+NicheProviders::SiteSetting.find_or_set(:domain_name, domain)
 NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name}.co.uk")
     RUBY
 
@@ -173,14 +174,16 @@ NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name
     say("")
     say("")
 
-    say("Thanks you for your patience! Installation is now complete.")
+    say("Thank you for your patience! Installation is now complete.")
     say("")
-    say("What next?")
-    say("2. add your styles in the file app/assets/stylesheets/application.css.scss")
-    say("2. run `rake assets:precompile`")
-    say("3. run `foreman start`")
-    say("4. open your browser at http://localhost:5000")
-    say("5. rejoice.")
+    say("What's next?")
+    say("1. edit colours and styles in the file 'app/assets/stylesheets/application.css.scss'")
+    say("2. copy an image named 'logo.png' to 'app/assets/images'")
+    say("3. run `cd #{domain_name}`")
+    say("4. run `rake assets:precompile`")
+    say("5. run `foreman start`")
+    say("6. open your browser at http://localhost:5000")
+    say("7. rejoice.")
     say("")
     say("")
 
