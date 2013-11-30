@@ -127,6 +127,7 @@ Sitemap: #{domain}/sitemap.xml
     @generator.remove_file "app/views/layouts/application.html.erb"
 
     # gitignore
+    @generator.remove_file ".gitignore"
     get "https://raw.github.com/jimlambie/niche_providers_template/master/template/gitignore", ".gitignore"
 
     # default settings
@@ -168,6 +169,20 @@ NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name
     # stylesheet
     @generator.remove_file "app/assets/stylesheets/application.css"
     get "https://raw.github.com/jimlambie/niche_providers_template/master/template/application.css.scss", "app/assets/stylesheets/application.css.scss"
+
+    say("")
+    say("")
+
+    say("Thanks you for your patience! Installation is now complete.")
+    say("")
+    say("What next?")
+    say("2. add your styles in the file app/assets/stylesheets/application.css.scss")
+    say("2. run `rake assets:precompile`")
+    say("3. run `foreman start`")
+    say("4. open your browser at http://localhost:5000")
+    say("5. rejoice.")
+    say("")
+    say("")
 
   end
 end
