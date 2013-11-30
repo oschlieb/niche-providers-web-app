@@ -146,7 +146,7 @@ NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name
     get "https://raw.github.com/jimlambie/niche_providers_template/master/template/heroku.yml", "config/heroku.yml"
     rake "niche_providers:heroku:config"
 
-    create_heroku = agree("Create the Heroku applications? [y/n]", :red)
+    create_heroku = ask("Create the Heroku applications? [y/n]", :red) == 'y'
     if create_heroku
       say("Creating Heroku applications")
       rake "all heroku:create"
@@ -155,7 +155,7 @@ NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name
     end
 
     if create_heroku
-      install_addons = agree("Install the adons for each Heroku application? [y/n]", :red)
+      install_addons = ask("Install the adons for each Heroku application? [y/n]", :red) == 'y'
 
       if install_addons
         say("Installing addons")
