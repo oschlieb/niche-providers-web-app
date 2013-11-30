@@ -166,6 +166,7 @@ NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name
     end    
 
     # stylesheet
+    @generator.remove_file "app/assets/stylesheets/application.css"
     get "https://raw.github.com/jimlambie/niche_providers_template/master/template/application.css.scss", "app/assets/stylesheets/application.css.scss"
 
   end
