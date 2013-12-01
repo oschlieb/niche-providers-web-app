@@ -69,17 +69,17 @@ test:
     RUBY
 
     # add paperclip settings to application.rb
-    @generator.inject_into_file "config/application.rb", :after => "config.assets.version = '1.0'\n" do
-     "
-     \n
-     config.paperclip_defaults = {
+    @generator.inject_into_file "config/application.rb", :after => "config.assets.version = '1.0'" do
+    "
+    # injected by the Niche Providers application generator
+    config.paperclip_defaults = {
       :storage => :s3,
       :s3_host_name => 's3-eu-west-1.amazonaws.com',
       :s3_protocol => 'http',
       :s3_credentials => {
         :region => Figaro.env.s3_region,
         :bucket => Figaro.env.s3_bucket,
-        :access_key_id => Figaro.env.s3_access_key,
+        :access_key_id => Figaro.env.s3_key,
         :secret_access_key => Figaro.env.s3_secret
       }
     }\n
@@ -155,13 +155,6 @@ NicheProviders::SiteSetting.find_or_set(:domain_name, domain)
 NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name}.co.uk")
     RUBY
 
-
-    # create & migrate
-    rake "db:create:all"
-    rake "niche_providers:install:migrations"
-    rake "db:migrate"
-    rake "niche_providers:app:bootstrap"
-
     # Create config files to be used by Figaro and the Heroku application setup
     say("Generating Heroku and application configuration files")
     get "https://raw.github.com/jimlambie/niche_providers_template/master/template/heroku.yml", "config/heroku.yml"
@@ -173,6 +166,11 @@ NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name
     # on Heroku, owned by James Lambie (jim@parkbenchproject.com)
     rake "niche_providers:config:create"
 
+    # create databases & migrate
+    rake "db:create:all"
+    rake "niche_providers:install:migrations"
+    rake "db:migrate"
+    rake "niche_providers:app:bootstrap"
 
     create_heroku = ask("Create the Heroku applications? [y/n]", :red) == 'y'
     if create_heroku
@@ -203,6 +201,7 @@ NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name
     # stylesheet
     @generator.remove_file "app/assets/stylesheets/application.css"
     get "https://raw.github.com/jimlambie/niche_providers_template/master/template/application.css.scss", "app/assets/stylesheets/application.css.scss"
+    get "https://raw.github.com/jimlambie/niche_providers_template/master/template/niche_providers_overrides.css.scss", "app/assets/stylesheets/niche_providers_overrides.css.scss"
 
     say("")
     say("")
