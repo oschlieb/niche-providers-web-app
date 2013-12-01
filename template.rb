@@ -140,13 +140,13 @@ NicheProviders::SiteSetting.find_or_set(:domain_name, "#{domain}")
 NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name}.co.uk")
     RUBY
 
-    # create databases
-    rake "db:create:all"
-
     # Create config files to be used by Figaro and the Heroku application setup
     say("Generating Heroku and application configuration files")
     get "https://raw.github.com/jimlambie/niche_providers_template/master/template/heroku.yml", "config/heroku.yml"
     get "https://raw.github.com/jimlambie/niche_providers_template/master/template/application.yml", "config/application.yml"
+
+    # create databases
+    rake "db:create:all"
 
     # Request config settings from existing Heroku application so they
     # can be copied into the template configuration files from the previous step
