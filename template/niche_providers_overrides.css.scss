@@ -1,0 +1,55 @@
+
+$main-background-color: #a29072;
+$bright-colour: #ba0000;
+$dark-colour: #7f0000;
+
+header {
+  background-color: $main-background-color;
+}
+
+footer {
+  background: url(/assets/niche_providers/footer-bg.png) 0 0 repeat-x $main-background-color;
+  border-bottom: 15px solid $bright-colour;
+}
+
+/* forms */
+fieldset legend span {
+  color: $dark-colour;
+}
+
+a, a:link, a:visited {
+  color: $dark-colour;
+}
+
+/* pagination */
+span.current {
+  color: $dark-colour;
+}
+
+/* provider */
+p.categories {
+  color: $dark-colour;
+}
+
+/* user image form */
+div#add_user_image {
+  background: $dark-colour;
+}
+
+/* navigation */
+nav .navContent .active, nav .navContent .menuitem:hover {
+  background: $bright-colour;
+}
+
+span#infobar span {
+  background-color: $bright-colour; 
+}
+
+/* search */
+div#premium-listings div.header {
+  background-color: $bright-colour;
+}
+
+div#premium-listings div.header span {
+  text-shadow: 0px 1px 1px darken($bright-colour, 10%);
+}

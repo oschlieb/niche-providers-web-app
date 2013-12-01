@@ -210,14 +210,15 @@ NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name
     say("Thank you for your patience! Installation is now complete.")
     say("")
     say("What's next?")
-    say("1. edit colours and styles in the file 'app/assets/stylesheets/application.css.scss'")
-    say("2. copy an image named 'logo.png' to 'app/assets/images'")
+    say("1. edit colours and styles in the CSS overrides file 'app/assets/stylesheets/niche_providers_overrides.css.scss'")
+    say("2. replace the default logo with your own: copy an image named 'logo.png' to 'app/assets/images'")
     say("3. run `cd #{domain_name}`")
     say("4. run `rake assets:precompile`")
     say("5. run `foreman start`")
     say("6. open your browser at http://localhost:5000")
     say("7. rejoice.")
     say("")
+    say("8. Maybe also read the documentation that has opened in your browser. Any questions can be emailed to jim@parkbenchproject.com.")
     say("")
 
   end
