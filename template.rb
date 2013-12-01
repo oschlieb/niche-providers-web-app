@@ -3,29 +3,13 @@ class AppBuilder < Rails::AppBuilder
   include Thor::Shell
 
   def gemfile
-
     get "https://raw.github.com/jimlambie/niche_providers_template/master/template/Gemfile", "Gemfile"
-
-    #super
-    #create_file "Gemfile"
-    #@generator.gem "rails", "3.2.14"
-    #@generator.gem "pg"
-    #@generator.gem "sass-rails",   "~> 3.2.3", group: [:assets]
-    #@generator.gem "coffee-rails", "~> 3.2.1", group: [:assets]
-    #@generator.gem "uglifier", ">= 1.0.3", group: [:assets]
-    #@generator.gem "jquery-rails"
-    #@generator.gem "unicorn"
-    #@generator.gem "acts_as_rateable", :git => "git://github.com/jimlambie/acts_as_rateable.git", :branch => "master"
-    #@generator.gem "addresslogic", :git => "git://github.com/nathansamson/addresslogic.git"
-    #@generator.gem 'exception_notification', :git => "git://github.com/smartinez87/exception_notification.git", :tag => "v3.0.1"
-    #@generator.gem "niche_providers", :git => "/Users/james/projects/niche_providers"
-    #@generator.gem "niche_providers", :git => "git://github.com/jimlambie/niche-providers-engine", :branch => 'master'
   end
 
   def leftovers
 
     say("*************************************", :green)
-    say("Niche Providers Application Generator")
+    say("Niche Providers Application Generator", :green)
     say("*************************************", :green)
 
     say("The installation process will:")
@@ -36,6 +20,7 @@ class AppBuilder < Rails::AppBuilder
     say("")
     say("Please answer the following questions:")
     say("")
+    say(args[0])
     domain_name = ask("What is the name of your application? (e.g. motoring_providers)", :green).underscore
     #name = Rails.application.class.parent_name.underscore
     default_domain = "http://www.#{domain_name}.co.uk"
@@ -151,9 +136,12 @@ Sitemap: #{domain}/sitemap.xml
 
     # default settings
     create_file "db/default_settings.rb", <<-RUBY
-NicheProviders::SiteSetting.find_or_set(:domain_name, domain)
+NicheProviders::SiteSetting.find_or_set(:domain_name, "#{domain}")
 NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name}.co.uk")
     RUBY
+
+    # create databases
+    rake "db:create:all"
 
     # Create config files to be used by Figaro and the Heroku application setup
     say("Generating Heroku and application configuration files")
@@ -166,8 +154,7 @@ NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name
     # on Heroku, owned by James Lambie (jim@parkbenchproject.com)
     rake "niche_providers:config:create"
 
-    # create databases & migrate
-    rake "db:create:all"
+    # migrate databases
     rake "niche_providers:install:migrations"
     rake "db:migrate"
     rake "niche_providers:app:bootstrap"
