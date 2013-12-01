@@ -68,6 +68,25 @@ test:
   database: #{domain_name}_test
     RUBY
 
+    # add paperclip settings to application.rb
+    @generator.inject_into_file "config/application.rb", :after => "config.assets.version = '1.0'\n" do
+     "
+     \n
+     config.paperclip_defaults = {
+      :storage => :s3,
+      :s3_host_name => 's3-eu-west-1.amazonaws.com',
+      :s3_protocol => 'http',
+      :s3_credentials => {
+        :region => Figaro.env.s3_region,
+        :bucket => Figaro.env.s3_bucket,
+        :access_key_id => Figaro.env.s3_access_key,
+        :secret_access_key => Figaro.env.s3_secret
+      }
+    }\n
+    "
+    
+    end
+
     routes_path = "config/routes.rb"
     @generator.remove_file(routes_path)
     create_file routes_path,  <<-RUBY
@@ -143,27 +162,41 @@ NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name
     rake "db:migrate"
     rake "niche_providers:app:bootstrap"
 
-    # Heroku setup
-    say("Generating Heroku configuration file")
+    # Create config files to be used by Figaro and the Heroku application setup
+    say("Generating Heroku and application configuration files")
     get "https://raw.github.com/jimlambie/niche_providers_template/master/template/heroku.yml", "config/heroku.yml"
-    rake "niche_providers:heroku:config"
+    get "https://raw.github.com/jimlambie/niche_providers_template/master/template/application.yml", "config/application.yml"
+
+    # Request config settings from existing Heroku application so they
+    # can be copied into the template configuration files from the previous step
+    # N.B. The user executing this command must have access to the `niche-providers-template` application
+    # on Heroku, owned by James Lambie (jim@parkbenchproject.com)
+    rake "niche_providers:config:create"
+
 
     create_heroku = ask("Create the Heroku applications? [y/n]", :red) == 'y'
     if create_heroku
       say("Creating Heroku applications")
       rake "all heroku:create"
     else
-      say("Skipping Heroku applications - run 'rake all heroku:create' to generate the applications in the future")
+      say("Skipping Heroku applications - run 'rake all heroku:create' to generate the applications in the future", :yellow)
     end
 
     if create_heroku
-      install_addons = ask("Install the adons for each Heroku application? [y/n]", :red) == 'y'
+      say("Addons specified for Niche Provider applications are:", :green)
+      say("     - heroku-postgresql:basic for PRODUCTION, heroku-postgresql:dev for STAGING")
+      say("     - newrelic:wayne")
+      say("     - pgbackups:plus")
+      say("     - sendgrid:starter")
+      say("")
+
+      install_addons = ask("Install the addons for each Heroku application? [y/n]", :red) == 'y'
 
       if install_addons
-        say("Installing addons")
+        say("Installing addons", :green)
         rake "all heroku:addons"
       else
-        say("Skipping Heroku addons - run 'rake all heroku:addons' to install them in the future")
+        say("Skipping Heroku addons - run 'rake all heroku:addons' to install them in the future", :yellow)
       end
     end    
 
