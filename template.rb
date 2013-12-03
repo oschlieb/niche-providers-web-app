@@ -231,7 +231,7 @@ NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name
     say("")
     say("")
 
-    say("Thank you for your patience! Installation is now complete.")
+    say("Thank you for your patience! Installation is now complete.", :green)
     say("")
     say("What's next?")
     say("1. edit colours and styles in the CSS overrides file 'app/assets/stylesheets/niche_providers_overrides.css.scss'")
