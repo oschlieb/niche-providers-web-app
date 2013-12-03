@@ -56,6 +56,7 @@ test:
     # add paperclip settings to application.rb
     @generator.inject_into_file "config/application.rb", :after => "config.assets.version = '1.0'" do
     "
+    \n
     # injected by the Niche Providers application generator
     config.paperclip_defaults = {
       :storage => :s3,
@@ -68,6 +69,32 @@ test:
         :secret_access_key => Figaro.env.s3_secret
       }
     }\n
+    
+    ActionMailer::Base.default :from => NicheProviders::SiteSetting.find_or_set(:info_email_label, 'Pet Providers <no-reply@#{domain_name}.co.uk>')
+    ActionMailer::Base.default :to => NicheProviders::SiteSetting.find_or_set(:info_email_address, 'info@#{domain_name}.co.uk')
+
+    if Rails.env.production?
+
+      config.action_mailer.default_url_options = { :host => #{default_domain} }
+
+      ActionMailer::Base.smtp_settings = {
+        :address        => 'smtp.sendgrid.net',
+        :port           => '587',
+        :authentication => :plain,
+        :user_name      => ENV['SENDGRID_USERNAME'],
+        :password       => ENV['SENDGRID_PASSWORD'],
+        :domain         => 'heroku.com'
+      }
+      
+      ActionMailer::Base.delivery_method = :smtp
+    end
+
+    if Rails.env.development?
+      config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+      config.action_mailer.delivery_method = :letter_opener
+      config.action_mailer.smtp_settings = { :address => 'localhost', :port => 1025 }
+    end
+
     "
     
     end
@@ -121,7 +148,11 @@ NicheProviders::Engine.load_seed
     create_file "public/robots.txt", <<-RUBY
 # See http://www.robotstxt.org/wc/norobots.html for documentation on how to use the robots.txt file
 User-Agent: *
-Disallow: /
+Allow: \/
+Disallow: \/ratings
+Disallow: \/edit_listing
+Disallow: \/admin
+Disallow: \/users
 Sitemap: #{domain}/sitemap.xml
     RUBY
 
@@ -183,6 +214,8 @@ NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name
       else
         say("Skipping Heroku addons - run 'rake all heroku:addons' to install them in the future", :yellow)
       end
+    else
+      say("Skipping Heroku addons - run 'rake all heroku:addons' to install them in the future", :yellow)
     end    
 
     # stylesheet
