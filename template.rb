@@ -70,12 +70,12 @@ test:
       }
     }\n
     
-    ActionMailer::Base.default :from => NicheProviders::SiteSetting.find_or_set(:info_email_label, 'Pet Providers <no-reply@#{domain_name}.co.uk>')
+    ActionMailer::Base.default :from => NicheProviders::SiteSetting.find_or_set(:info_email_label, '#{domain_name.titleize} <no-reply@#{domain_name}.co.uk>')
     ActionMailer::Base.default :to => NicheProviders::SiteSetting.find_or_set(:info_email_address, 'info@#{domain_name}.co.uk')
 
     if Rails.env.production?
 
-      config.action_mailer.default_url_options = { :host => #{default_domain} }
+      config.action_mailer.default_url_options = { :host => '#{default_domain}' }
 
       ActionMailer::Base.smtp_settings = {
         :address        => 'smtp.sendgrid.net',
