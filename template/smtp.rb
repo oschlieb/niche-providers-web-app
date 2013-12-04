@@ -3,7 +3,7 @@ ActionMailer::Base.default :from => NicheProviders::SiteSetting.find_or_set(:inf
 ActionMailer::Base.default :to => NicheProviders::SiteSetting.find_or_set(:info_email_address, '')
 
 if Rails.env.production?
-  config.action_mailer.default_url_options = { :host => NicheProviders::SiteSetting.find_or_set(:domain_name, '') }
+  Rails.application.config.action_mailer.default_url_options = { :host => NicheProviders::SiteSetting.find_or_set(:domain_name, '') }
   ActionMailer::Base.smtp_settings = {
     :address        => 'smtp.sendgrid.net',
     :port           => '587',
@@ -16,8 +16,8 @@ if Rails.env.production?
 end
 
 if Rails.env.development?
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
-  config.action_mailer.delivery_method = :letter_opener
-  config.action_mailer.smtp_settings = { :address => 'localhost', :port => 1025 }
+  Rails.application.config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  Rails.application.config.action_mailer.delivery_method = :letter_opener
+  Rails.application.config.action_mailer.smtp_settings = { :address => 'localhost', :port => 1025 }
 end
 
