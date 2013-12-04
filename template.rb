@@ -152,18 +152,6 @@ NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name
     # create databases
     rake "db:create:all"
 
-    # Request config settings from existing Heroku application so they
-    # can be copied into the template configuration files from the previous step
-    # N.B. The user executing this command must have access to the `niche-providers-template` application
-    # on Heroku, owned by James Lambie (jim@parkbenchproject.com)
-    rake "niche_providers:config:create"
-
-    # migrate databases
-    rake "niche_providers:install:migrations"
-    rake "db:migrate"
-    rake "niche_providers:app:bootstrap"
-
-
     # add SMTP settings to application.rb
     @generator.inject_into_file "config/application.rb", :after => "config.assets.version = '1.0'" do
     "
@@ -190,10 +178,19 @@ NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name
       config.action_mailer.smtp_settings = { :address => 'localhost', :port => 1025 }
     end
     \n
-    "
-    
+    "    
     end
 
+    # Request config settings from existing Heroku application so they
+    # can be copied into the template configuration files from the previous step
+    # N.B. The user executing this command must have access to the `niche-providers-template` application
+    # on Heroku, owned by James Lambie (jim@parkbenchproject.com)
+    rake "niche_providers:config:create"
+
+    # migrate databases
+    rake "niche_providers:install:migrations"
+    rake "db:migrate"
+    rake "niche_providers:app:bootstrap"
 
     create_heroku = ask("Create the Heroku applications? [y/n]", :red) == 'y'
     if create_heroku
