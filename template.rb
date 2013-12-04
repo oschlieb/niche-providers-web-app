@@ -143,6 +143,7 @@ Sitemap: #{domain}/sitemap.xml
 NicheProviders::SiteSetting.find_or_set(:domain_name, "#{domain}")
 NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name}.co.uk")
 NicheProviders::SiteSetting.find_or_set(:info_email_label, "'#{domain_name.titleize}' <no-reply@#{domain_name}.co.uk>")
+NicheProviders::SiteSetting.find_or_set(:site_name, "#{domain_name.titleize}")
     RUBY
 
     # Create config files to be used by Figaro and the Heroku application setup
