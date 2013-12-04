@@ -3,7 +3,7 @@ ActionMailer::Base.default :from => NicheProviders::SiteSetting.find_or_set(:inf
 ActionMailer::Base.default :to => NicheProviders::SiteSetting.find_or_set(:info_email_address, '')
 
 if Rails.env.production?
-  config.action_mailer.default_url_options = { :host => '#{default_domain}' }
+  config.action_mailer.default_url_options = { :host => NicheProviders::SiteSetting.find_or_set(:domain_name, '') }
   ActionMailer::Base.smtp_settings = {
     :address        => 'smtp.sendgrid.net',
     :port           => '587',
