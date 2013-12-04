@@ -142,6 +142,7 @@ Sitemap: #{domain}/sitemap.xml
     create_file "db/default_settings.rb", <<-RUBY
 NicheProviders::SiteSetting.find_or_set(:domain_name, "#{domain}")
 NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name}.co.uk")
+NicheProviders::SiteSetting.find_or_set(:info_email_label, "\"#{domain_name.titleize}\" <no-reply@#{domain_name}.co.uk>")
     RUBY
 
     # Create config files to be used by Figaro and the Heroku application setup
@@ -151,35 +152,6 @@ NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name
 
     # create databases
     rake "db:create:all"
-
-    # add SMTP settings to application.rb
-    @generator.inject_into_file "config/application.rb", :after => "config.assets.version = '1.0'" do
-    "
-    \n
-    ActionMailer::Base.default :from => NicheProviders::SiteSetting.find_or_set(:info_email_label, '#{domain_name.titleize} <no-reply@#{domain_name}.co.uk>')
-    ActionMailer::Base.default :to => NicheProviders::SiteSetting.find_or_set(:info_email_address, 'info@#{domain_name}.co.uk')
-
-    if Rails.env.production?
-      config.action_mailer.default_url_options = { :host => '#{default_domain}' }
-      ActionMailer::Base.smtp_settings = {
-        :address        => 'smtp.sendgrid.net',
-        :port           => '587',
-        :authentication => :plain,
-        :user_name      => ENV['SENDGRID_USERNAME'],
-        :password       => ENV['SENDGRID_PASSWORD'],
-        :domain         => 'heroku.com'
-      }
-      ActionMailer::Base.delivery_method = :smtp
-    end
-
-    if Rails.env.development?
-      config.action_mailer.default_url_options = { :host => 'localhost:3000' }
-      config.action_mailer.delivery_method = :letter_opener
-      config.action_mailer.smtp_settings = { :address => 'localhost', :port => 1025 }
-    end
-    \n
-    "    
-    end
 
     # Request config settings from existing Heroku application so they
     # can be copied into the template configuration files from the previous step
@@ -218,7 +190,10 @@ NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name
       end
     else
       say("Skipping Heroku addons - run 'rake all heroku:addons' to install them in the future", :yellow)
-    end    
+    end
+
+    # add SMTP settings initializer
+    get "https://raw.github.com/jimlambie/niche_providers_template/master/template/smtp.rb", "config/initializers/smtp.rb"
 
     # stylesheet
     @generator.remove_file "app/assets/stylesheets/application.css"
