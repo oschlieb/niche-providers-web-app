@@ -21,7 +21,7 @@ class AppBuilder < Rails::AppBuilder
     say("Please answer the following questions:")
     say("")
     say(args[0])
-    domain_name = ask("What is the name of your application? (e.g. motoring_providers)", :green).underscore
+    domain_name = ask("What is the name of your application? (e.g. motoring-providers)", :green)
     #name = Rails.application.class.parent_name.underscore
     default_domain = "http://www.#{domain_name}.co.uk"
     domain = ask("What is the domain name for your application? (press ENTER to use #{default_domain})", :green)
@@ -140,10 +140,12 @@ Sitemap: #{domain}/sitemap.xml
 
     # default settings
     create_file "db/default_settings.rb", <<-RUBY
-NicheProviders::SiteSetting.find_or_set(:domain_name, "#{domain}")
-NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name}.co.uk")
-NicheProviders::SiteSetting.find_or_set(:info_email_label, "'#{domain_name.titleize}' <no-reply@#{domain_name}.co.uk>")
-NicheProviders::SiteSetting.find_or_set(:site_name, "#{domain_name.titleize}")
+NicheProviders::SiteSetting.find_or_set(:site_name, "#{domain_name.titleize}", {:form_value_type => 'text_field'})
+NicheProviders::SiteSetting.find_or_set(:domain_name, "#{domain}", {:form_value_type => 'text_field'})
+NicheProviders::SiteSetting.find_or_set(:info_email_address, "info@#{domain_name}.co.uk", {:form_value_type => 'text_field'})
+NicheProviders::SiteSetting.find_or_set(:info_email_label, "'#{domain_name.titleize}' <no-reply@#{domain_name}.co.uk>", {:form_value_type => 'text_field'})
+NicheProviders::SiteSetting.find_or_set(:facebook_id, "#{domain_name}", {:form_value_type => 'text_field'})
+NicheProviders::SiteSetting.find_or_set(:twitter_id, "#{domain_name}", {:form_value_type => 'text_field'})
     RUBY
 
     # Create config files to be used by Figaro and the Heroku application setup
