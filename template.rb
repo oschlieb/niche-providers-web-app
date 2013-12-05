@@ -194,13 +194,78 @@ NicheProviders::SiteSetting.find_or_set(:twitter_id, "#{domain_name}", {:form_va
       say("Skipping Heroku addons - run 'rake all heroku:addons' to install them in the future", :yellow)
     end
 
-    # add SMTP settings initializer
-    get "https://raw.github.com/jimlambie/niche_providers_template/master/template/smtp.rb", "config/initializers/smtp.rb"
+    # add SMTP settings
+    @generator.inject_into_file "config/environments/development.rb", :after => "config.assets.debug = true" do
+    "
+    \n
+    # injected by the Niche Providers application generator
+    ActionMailer::Base.default :from => NicheProviders::SiteSetting.find_or_set(:info_email_label, '')
+    ActionMailer::Base.default :to => NicheProviders::SiteSetting.find_or_set(:info_email_address, '')
+
+    config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+    config.action_mailer.delivery_method = :letter_opener
+    config.action_mailer.smtp_settings = { :address => 'localhost', :port => 1025 }
+    \n
+    "
+    end
+
+    @generator.inject_into_file "config/environments/development.rb", :after => "end" do
+    "
+    \n
+    # injected by the Niche Providers application generator
+    Rails.application.config.to_prepare do
+      ActionMailer::Base.default :from => NicheProviders::SiteSetting.find_or_set(:info_email_label, '')
+      ActionMailer::Base.default :to => NicheProviders::SiteSetting.find_or_set(:info_email_address, '')
+    end
+
+    \n
+    "
+    end
+
+    @generator.inject_into_file "config/environments/production.rb", :after => "# config.action_mailer.raise_delivery_errors = false" do
+    "
+    \n
+    # injected by the Niche Providers application generator
+    ActionMailer::Base.default :from => NicheProviders::SiteSetting.find_or_set(:info_email_label, '')
+    ActionMailer::Base.default :to => NicheProviders::SiteSetting.find_or_set(:info_email_address, '')    
+    
+    config.action_mailer.default_url_options = { :host => NicheProviders::SiteSetting.find_or_set(:domain_name, '') }
+    
+    ActionMailer::Base.smtp_settings = {
+      :address        => 'smtp.sendgrid.net',
+      :port           => '587',
+      :authentication => :plain,
+      :user_name      => ENV['SENDGRID_USERNAME'],
+      :password       => ENV['SENDGRID_PASSWORD'],
+      :domain         => 'heroku.com'
+    }
+    
+    ActionMailer::Base.delivery_method = :smtp
+    \n
+    "
+    end
+
+    @generator.inject_into_file "config/environments/production.rb", :after => "end" do
+    "
+    \n
+    # injected by the Niche Providers application generator
+    Rails.application.config.to_prepare do
+      ActionMailer::Base.default :from => NicheProviders::SiteSetting.find_or_set(:info_email_label, '')
+      ActionMailer::Base.default :to => NicheProviders::SiteSetting.find_or_set(:info_email_address, '')
+    end
+
+    \n
+    "
+    end
 
     # stylesheet
     @generator.remove_file "app/assets/stylesheets/application.css"
     get "https://raw.github.com/jimlambie/niche_providers_template/master/template/application.css.scss", "app/assets/stylesheets/application.css.scss"
     get "https://raw.github.com/jimlambie/niche_providers_template/master/template/niche_providers_overrides.css.scss", "app/assets/stylesheets/niche_providers_overrides.css.scss"
+
+    # javascript
+    @generator.remove_file "app/assets/javascripts/application.js"
+    get "https://raw.github.com/jimlambie/niche_providers_template/master/template/application.js", "app/assets/javascripts/application.js"
 
     say("")
     say("")

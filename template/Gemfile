@@ -16,9 +16,12 @@ group :assets do
   gem "sass-rails",   "~> 3.2.3"
   gem "coffee-rails", "~> 3.2.1"
   gem "uglifier", ">= 1.0.3"
+  gem 'jquery-fileupload-rails', '0.4.0'
 end
 
 gem "jquery-rails"
+
+gem 'tinymce-rails', '3.4.9'
 
 gem "acts_as_rateable", :git => "git://github.com/jimlambie/acts_as_rateable.git", :branch => "master"
 gem "addresslogic", :git => "git://github.com/nathansamson/addresslogic.git"
