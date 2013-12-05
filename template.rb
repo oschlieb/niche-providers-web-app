@@ -61,9 +61,8 @@ test:
     config.paperclip_defaults = {
       :storage => :s3,
       :s3_host_name => 's3-eu-west-1.amazonaws.com',
-      :s3_protocol => 'http',
+      :region => Figaro.env.s3_region,
       :s3_credentials => {
-        :region => Figaro.env.s3_region,
         :bucket => Figaro.env.s3_bucket,
         :access_key_id => Figaro.env.s3_key,
         :secret_access_key => Figaro.env.s3_secret
