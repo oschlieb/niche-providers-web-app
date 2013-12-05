@@ -21,7 +21,7 @@ class AppBuilder < Rails::AppBuilder
     say("Please answer the following questions:")
     say("")
     say(args[0])
-    domain_name = ask("What is the name of your application? (e.g. motoring-providers)", :green)
+    domain_name = ask("What is the name of your application? (e.g. motoring-providers)", :green).parameterize
     #name = Rails.application.class.parent_name.underscore
     default_domain = "http://www.#{domain_name}.co.uk"
     domain = ask("What is the domain name for your application? (press ENTER to use #{default_domain})", :green)
@@ -44,13 +44,13 @@ development:
   adapter: postgresql
   encoding: unicode
   pool: 5
-  database: #{domain_name}_development
+  database: #{domain_name.underscore}_development
 
 test:
   adapter: postgresql
   encoding: unicode
   pool: 5
-  database: #{domain_name}_test
+  database: #{domain_name.underscore}_test
     RUBY
 
     # add paperclip settings to application.rb
@@ -75,7 +75,7 @@ test:
     routes_path = "config/routes.rb"
     @generator.remove_file(routes_path)
     create_file routes_path,  <<-RUBY
-#{domain_name.camelize}::Application.routes.draw do
+#{domain_name.underscore.camelize}::Application.routes.draw do
   mount NicheProviders::Engine, at: "/"
 end
     RUBY
@@ -211,7 +211,7 @@ NicheProviders::SiteSetting.find_or_set(:twitter_id, "#{domain_name}", {:form_va
     say("What's next?")
     say("1. edit colours and styles in the CSS overrides file 'app/assets/stylesheets/niche_providers_overrides.css.scss'")
     say("2. replace the default logo with your own: copy an image named 'logo.png' to 'app/assets/images'")
-    say("3. run `cd #{domain_name}`")
+    say("3. change directory to your new application")
     say("4. run `rake assets:precompile`")
     say("5. run `foreman start`")
     say("6. open your browser at http://localhost:5000")
