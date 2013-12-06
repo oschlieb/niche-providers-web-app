@@ -19,8 +19,7 @@ group :assets do
   gem 'jquery-fileupload-rails', '0.4.0'
 end
 
-gem "jquery-rails"
-
+#gem "jquery-rails"
 gem 'tinymce-rails', '3.4.9'
 
 gem "acts_as_rateable", :git => "git://github.com/jimlambie/acts_as_rateable.git", :branch => "master"
